@@ -13,6 +13,12 @@
         "source": "https://github.com/yiisoft/yii2"
     },
     "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "app\\": "",
+            "src\\": "src/"
+        }
+    },
     "require": {
         "php": "^8.3",
         "yiisoft/yii2": "~2.0.45",

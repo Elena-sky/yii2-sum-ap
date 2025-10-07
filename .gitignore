@@ -26,8 +26,15 @@ phpunit.phar
 # local phpunit config
 /phpunit.xml
 
+# PHPUnit caches and artifacts
+.phpunit.result.cache
+var/.phpunit.cache/
+coverage/
 tests/_output/*
 tests/_support/_generated
+
+# Yii2 generated assets
+assets/
 
 #vagrant folder
 /.vagrant
