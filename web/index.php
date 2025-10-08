@@ -9,4 +9,7 @@ require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 
 $config = require __DIR__ . '/../config/web.php';
 
+$container = require __DIR__ . '/../config/container.php';
+Yii::$container->setDefinitions($container);
+
 (new yii\web\Application($config))->run();

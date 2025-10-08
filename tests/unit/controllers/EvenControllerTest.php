@@ -8,6 +8,8 @@ use yii\web\Application;
 use yii\web\Request;
 use yii\web\Response;
 use yii\base\Module;
+use src\Contracts\NumbersSumServiceInterface;
+use src\DTO\SumResponseDTO;
 
 /**
  * @coversDefaultClass \app\controllers\EvenController
@@ -37,7 +39,12 @@ final class EvenControllerTest extends TestCase
         \Yii::$app = $this->app;
 
         $module = new Module('test');
-        $this->controller = new EvenController('even', $module);
+        $serviceMock = $this->createMock(NumbersSumServiceInterface::class);
+        
+        $serviceMock->method('sumEven')
+            ->willReturn(new SumResponseDTO(12));
+            
+        $this->controller = new EvenController('even', $module, $serviceMock);
     }
 
     protected function tearDown(): void

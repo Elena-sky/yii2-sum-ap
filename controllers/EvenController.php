@@ -6,6 +6,8 @@ use Yii;
 use yii\rest\Controller;
 use yii\web\Response;
 use src\Validation\SumRequestForm;
+use src\Contracts\NumbersSumServiceInterface;
+use src\DTO\SumRequestDTO;
 
 /**
  * Class EvenController
@@ -16,6 +18,14 @@ use src\Validation\SumRequestForm;
  */
 final class EvenController extends Controller
 {
+    private NumbersSumServiceInterface $numbersSumService;
+
+    public function __construct($id, $module, NumbersSumServiceInterface $numbersSumService, $config = [])
+    {
+        $this->numbersSumService = $numbersSumService;
+        parent::__construct($id, $module, $config);
+    }
+
     /**
      * Handles POST `/api/sum-even` request.
      *
@@ -30,7 +40,11 @@ final class EvenController extends Controller
             return $this->asJson(['errors' => $form->getErrors()]);
         }
 
-        return $this->asJson(['sum' => 12]);
+        $requestDTO = new SumRequestDTO($form->numbers);
+        
+        $responseDTO = $this->numbersSumService->sumEven($requestDTO);
+
+        return $this->asJson($responseDTO->toArray());
     }
 }
 
