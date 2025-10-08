@@ -38,6 +38,7 @@ class SumRequestFormTest extends Unit
         $form->load(['numbers' => [1, 2, 3, 4]], '');
         $this->assertTrue($form->validate());
         $this->assertEmpty($form->getErrors());
+        $this->assertSame([1,2,3,4], $form->numbers);
     }
 
     public function testNumbersNull(): void
@@ -46,6 +47,14 @@ class SumRequestFormTest extends Unit
         $form->load(['numbers' => null], '');
         $this->assertFalse($form->validate());
         $this->assertArrayHasKey('numbers', $form->getErrors());
+    }
+
+    public function testNormalizationCastsStringsAndNegativesToInt(): void
+    {
+        $form = new SumRequestForm();
+        $form->load(['numbers' => ['8', '-10', '2']], '');
+        $this->assertTrue($form->validate());
+        $this->assertSame([8, -10, 2], $form->numbers);
     }
 
     public function testAttributeLabels(): void

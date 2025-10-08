@@ -28,7 +28,7 @@ class SumRequestForm extends Model
         return [
             [['numbers'], 'required'],
             ['numbers', 'validateIsArray'],
-            ['numbers', 'each', 'rule' => ['integer']],
+            ['numbers', 'validateNumericLikeArray'],
         ];
     }
 
@@ -42,6 +42,36 @@ class SumRequestForm extends Model
         if (!is_array($this->$attribute)) {
             $this->addError($attribute, 'numbers must be an array');
         }
+    }
+
+    /**
+     * Ensure all values are numeric-like (int, float, numeric string, signed numeric string).
+     */
+    public function validateNumericLikeArray(string $attribute): void
+    {
+        if (!is_array($this->$attribute)) {
+            return;
+        }
+
+        foreach ($this->$attribute as $index => $value) {
+            if (!is_numeric($value)) {
+                $this->addError($attribute, "numbers[$index] must be numeric");
+            }
+        }
+    }
+
+    /**
+     * After successful validation, cast all values to integers.
+     */
+    public function afterValidate(): void
+    {
+        parent::afterValidate();
+
+        if ($this->hasErrors()) {
+            return;
+        }
+
+        $this->numbers = array_map(static fn($n) => (int)$n, $this->numbers);
     }
 
     /**
