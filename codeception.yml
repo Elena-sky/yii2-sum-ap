@@ -13,12 +13,11 @@ modules:
         Yii2:
             configFile: 'config/test.php'
 
-# To enable code coverage:
+# To enable code coverage (PHPUnit 10/11 compatible):
 coverage:
     enabled: true
-    whitelist:
-        include:
-            - src/*
-            - controllers/*
-            - models/*
-            - commands/*
+    include:
+        - src/*
+        - controllers/*
+        - models/*
+        - commands/*

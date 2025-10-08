@@ -1,8 +1,51 @@
-version: '3.9'
+version: "3.9"
+
 services:
   api:
     build: .
+    container_name: yii2-sum-api
     ports:
       - "8000:8000"
     volumes:
       - .:/app
+      - /app/vendor
+    environment:
+      - YII_ENV=prod
+      - YII_DEBUG=0
+    restart: unless-stopped
+    networks:
+      - yii2-network
+
+  test:
+    build: .
+    container_name: yii2-sum-test
+    volumes:
+      - .:/app
+      - /app/vendor
+    environment:
+      - YII_ENV=test
+      - YII_DEBUG=1
+    command: ["codecept", "run", "unit"]
+    networks:
+      - yii2-network
+    profiles:
+      - testing
+
+  dev:
+    build: .
+    container_name: yii2-sum-dev
+    volumes:
+      - .:/app
+      - /app/vendor
+    environment:
+      - YII_ENV=dev
+      - YII_DEBUG=1
+    command: ["tail", "-f", "/dev/null"]
+    networks:
+      - yii2-network
+    profiles:
+      - development
+
+networks:
+  yii2-network:
+    driver: bridge

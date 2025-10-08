@@ -1,0 +1,49 @@
+{
+  "name": "Yii2 Sum API Development",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/app",
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "bmewburn.vscode-intelephense-client",
+        "xdebug.php-debug",
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml",
+        "ms-vscode.makefile-tools",
+        "ms-vscode.test-adapter-converter",
+        "hbenl.vscode-test-explorer",
+        "ms-vscode.vscode-typescript-next"
+      ],
+      "settings": {
+        "php.suggest.basic": false,
+        "php.validate.enable": true,
+        "intelephense.files.maxSize": 5000000,
+        "intelephense.completion.triggerParameterHints": true,
+        "intelephense.completion.insertUseDeclaration": true,
+        "intelephense.format.enable": true,
+        "files.associations": {
+          "*.php": "php",
+          "*.phtml": "php"
+        },
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "Yii2 API",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "composer install --no-interaction --prefer-dist",
+  "remoteUser": "root",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  }
+}
+
